@@ -154,6 +154,9 @@ class Matching:
             self.load_from_networkx(H)
         if precompute_shortest_paths:
             self.matching_graph.compute_all_pairs_shortest_paths()
+            
+    def test(self) -> None:
+        print("Hi, I'm working!")
 
     def add_edge(
             self,
@@ -210,6 +213,24 @@ class Matching:
         error_probability = error_probability if has_error_probability else -1
         self.matching_graph.add_edge(node1, node2, qubit_id, weight,
                                      error_probability, has_error_probability)
+        
+    def remove_edge(
+            self,
+            node1: int,
+            node2: int
+            ) -> None:
+        """
+        Remove an edge from the matching graph
+
+        Parameters
+        ----------
+        node1: int
+            The ID of node1 in the new edge (node1, node2)
+        node2: int
+            The ID of node2 in the new edge (node1, node2)
+        """
+
+        self.matching_graph.remove_edge(node1, node2)
 
     def load_from_networkx(self, graph: nx.Graph) -> None:
         r"""
@@ -655,6 +676,23 @@ class Matching:
             'weight': e[2].weight,
             'error_probability': e[2].error_probability
             }) for e in edata]
+    
+    def get_edge(self,n1,n2) -> Tuple[int, int, Dict]:
+        """Edges of the matching graph
+
+        Returns a single edge connecting n1,n2
+
+        Returns
+        -------
+        List of (int, int, dict) tuples
+            A list of edges of the matching graph
+        """
+        e = self.matching_graph.get_edge(n1,n2)
+        return (e[0], e[1], {
+            'qubit_id': e[2].qubit_ids,
+            'weight': e[2].weight,
+            'error_probability': e[2].error_probability
+            })
     
     def to_networkx(self) -> nx.Graph:
         """Convert to NetworkX graph

@@ -124,6 +124,17 @@ void MatchingGraph::AddEdge(
             matching_graph);
 }
 
+void MatchingGraph::RemoveEdge(
+    int node1, 
+    int node2 ){
+        auto n1 = boost::vertex(node1, matching_graph);
+        auto n2 = boost::vertex(node2, matching_graph);
+        boost::remove_edge(
+            n1,
+            n2,
+            matching_graph);
+}
+
 void MatchingGraph::ComputeAllPairsShortestPaths(){
     int n = boost::num_vertices(matching_graph);
     all_distances.clear();
@@ -449,6 +460,31 @@ std::vector<std::tuple<int,int,WeightedEdgeData>> MatchingGraph::GetEdges() cons
         edges.push_back(edge);
     }
     return edges;
+}
+
+std::tuple<int,int,WeightedEdgeData> MatchingGraph::GetEdge(
+    int node1, 
+    int node2
+) const {
+    auto n1 = boost::vertex(node1, matching_graph);
+    auto n2 = boost::vertex(node2, matching_graph);
+        
+    auto es = boost::edge(n1, n2, matching_graph);
+    
+    if (!es.second) {
+        throw std::invalid_argument("Requested edge is not in the graph");
+    }
+    
+    auto est = es.first;
+    
+    WeightedEdgeData edata = matching_graph[est];
+    int s = boost::source(est, matching_graph);
+    int t = boost::target(est, matching_graph);
+    
+    std::tuple<int,int,WeightedEdgeData> edge = std::make_tuple(s, t, edata);
+    
+    return edge;
+    
 }
 
 bool MatchingGraph::HasComputedAllPairsShortestPaths() const {

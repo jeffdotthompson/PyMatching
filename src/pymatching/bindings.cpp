@@ -141,6 +141,36 @@ PYBIND11_MODULE(_cpp_mwpm, m) {
           >>> graph.get_num_edges()
           4
           )")
+     .def("remove_edge", &MatchingGraph::RemoveEdge, "node1"_a, "node2"_a, u8R"(
+          Removes an edge from the matching graph
+
+          Parameters
+          ----------
+          node1: int
+              The id of the first node in the edge to be removed
+          node2: int
+              The id of the second node in the edge to be removed
+         
+
+          Examples
+          --------
+          TBD
+          )")
+    .def("get_edge", &MatchingGraph::GetEdge, "node1"_a, "node2"_a, u8R"(
+          Gets an edge from the matching graph
+
+          Parameters
+          ----------
+          node1: int
+              The id of the first node in the edge sought
+          node2: int
+              The id of the second node in the edgesought
+         
+
+          Examples
+          --------
+          TBD
+          )")
      .def("add_noise", &MatchingGraph::AddNoise, u8R"(
           Flips each edge independently with the associated error probability,
           returning the noise vector and syndrome.

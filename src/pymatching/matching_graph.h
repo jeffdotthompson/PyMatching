@@ -83,6 +83,10 @@ class MatchingGraph{
         void AddEdge(int node1, int node2, std::set<int> qubit_ids,
                      double weight, double error_probability,
                      bool has_error_probability);
+                     
+        void RemoveEdge(int node1, int node2);
+        
+        std::tuple<int,int,WeightedEdgeData> GetEdge(int node1, int node2) const;
         /**
          * @brief Compute and store the shortest path between every pair of nodes in the matching graph.
          * This is only used or needed if exact matching is used (rather than the default local matching).
